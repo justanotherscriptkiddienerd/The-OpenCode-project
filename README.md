@@ -24,6 +24,9 @@ Download with  ```git clone https://github.com/justanotherscriptkiddienerd/The-O
 
 Run with ```cd The-OpenCode-project```
 
+And ```python3 Opencode1.0.0.py```
+
+You can also unzip and run the .exe, but It's easier just to use the .py *if* you have python and tkinter installed.
 
 
 
