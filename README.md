@@ -19,6 +19,10 @@ By the stable release (not alpha or beta) I want:
 # How to Contribute
 Commit a file... please. This is my first project and I have high hopes for it. However, It won't go very far without YOU, so please help with this project. Helping can be as simple as reporting a bug or recomending a feature. Have a nice day!
 
+# Usage
+Download with  ```git clone https://github.com/justanotherscriptkiddienerd/The-OpenCode-project```
+
+Run with ```cd The-OpenCode-project```
 
 
 
