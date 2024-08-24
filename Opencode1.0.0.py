@@ -6,7 +6,7 @@ import os
 class CodeEditor:
     def __init__(self, root):
         self.root = root
-        self.root.title("Python Code Editor")
+        self.root.title("Opencode")
         self.root.geometry("800x600")
         self.root.configure(bg='black')
 
