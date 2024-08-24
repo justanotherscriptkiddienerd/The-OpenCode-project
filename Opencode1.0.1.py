@@ -1,5 +1,5 @@
 import tkinter as tk
-from tkinter import filedialog, simpledialog, scrolledtext, Menu
+from tkinter import filedialog, scrolledtext, Menu
 from tkinter import ttk
 import subprocess
 
@@ -55,47 +55,43 @@ class CodeEditor:
 
         file_menu = tk.Menu(menu_bar, tearoff=0, bg='#3c3c3c', fg='#dcdcdc')
         menu_bar.add_cascade(label="File", menu=file_menu)
-        file_menu.add_command(label="New", command=self.new_file)
         file_menu.add_command(label="Open", command=self.open_file)
         file_menu.add_command(label="Save", command=self.save_file)
-        file_menu.add_command(label="Save As", command=self.save_as_file)
         file_menu.add_separator()
-        file_menu.add_command(label="Exit", command=self.root.quit)  # This will close the window
+        file_menu.add_command(label="Exit", command=self.root.destroy)
 
+        run_menu = tk.Menu(menu_bar, tearoff=0, bg='#3c3c3c', fg='#dcdcdc')
+        menu_bar.add_cascade(label="Run", menu=run_menu)
+        run_menu.add_command(label="Run Code", command=self.run_code)
+        
         settings_menu = tk.Menu(menu_bar, tearoff=0, bg='#3c3c3c', fg='#dcdcdc')
         menu_bar.add_cascade(label="Settings", menu=settings_menu)
         settings_menu.add_command(label="Change Background Color", command=self.change_background_color)
         settings_menu.add_command(label="Change Font", command=self.change_font)
 
-        execute_menu = tk.Menu(menu_bar, tearoff=0, bg='#3c3c3c', fg='#dcdcdc')
-        menu_bar.add_cascade(label="Execute", menu=execute_menu)
-        execute_menu.add_command(label="Run", command=self.run_code)
 
         language_menu = tk.Menu(menu_bar, tearoff=0, bg='#3c3c3c', fg='#dcdcdc')
-        menu_bar.add_cascade(label="Code Language", menu=language_menu)
+        menu_bar.add_cascade(label="Language", menu=language_menu)
         language_menu.add_radiobutton(label="Python", variable=self.language, value='Python')
+        language_menu.add_radiobutton(label="Ruby", variable=self.language, value='Ruby')
         language_menu.add_radiobutton(label="Bash", variable=self.language, value='Bash')
-
-    def new_file(self):
-        self.text_area.delete(1.0, tk.END)
+        language_menu.add_radiobutton(label="JavaScript", variable=self.language, value='JavaScript')
 
     def open_file(self):
-        file_path = filedialog.askopenfilename(defaultextension=".py", filetypes=[("Python Files", "*.py"), ("All Files", "*.*")])
+        file_path = filedialog.askopenfilename()
         if file_path:
             with open(file_path, 'r') as file:
+                code = file.read()
                 self.text_area.delete(1.0, tk.END)
-                self.text_area.insert(tk.END, file.read())
+                self.text_area.insert(tk.END, code)
 
     def save_file(self, event=None):
-        file_extension = ".py" if self.language.get() == 'Python' else ".sh"
-        file_path = filedialog.asksaveasfilename(defaultextension=file_extension, filetypes=[("Python Files", "*.py"), ("Bash Scripts", "*.sh"), ("All Files", "*.*")])
+        file_path = filedialog.asksaveasfilename(defaultextension=".py")
         if file_path:
             with open(file_path, 'w') as file:
-                file.write(self.text_area.get(1.0, tk.END).strip())
-
-    def save_as_file(self):
-        self.save_file()
-
+                code = self.text_area.get(1.0, tk.END)
+                file.write(code)
+    
     def change_background_color(self):
         color = simpledialog.askstring("Background Color", "Enter a color code (e.g., '#2e2e2e'):")
         if color:
@@ -113,6 +109,25 @@ class CodeEditor:
         self.terminal.configure(bg=color)
         self.root.configure(bg=color)
 
+    def run_code(self, event=None):
+        code = self.text_area.get(1.0, tk.END)
+        language = self.language.get()
+
+        if language == 'Python':
+            command = ['python3', '-c', code]
+        elif language == 'Ruby':
+            command = ['ruby', '-e', code]
+        elif language == 'Bash':
+            command = ['bash', '-c', code]
+        elif language == 'JavaScript':
+            command = ['node', '-e', code]
+
+        process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        output, error = process.communicate()
+
+        self.terminal.delete(1.0, tk.END)
+        self.terminal.insert(tk.END, output.decode('utf-8'))
+        self.terminal.insert(tk.END, error.decode('utf-8'))
     def change_font(self):
         font = simpledialog.askstring("Font", "Enter font name (e.g., 'Fira Code'):")
         if font:
@@ -124,32 +139,14 @@ class CodeEditor:
         self.terminal.configure(font=(font, 12))
 
     def update_line_count(self, event=None):
-        line_count = self.text_area.index('end-1c').split('.')[0]
+        lines = self.text_area.get(1.0, tk.END).split('\n')
+        line_count_str = '\n'.join(str(i + 1) for i in range(len(lines)))
+        self.line_count.config(state=tk.NORMAL)
         self.line_count.delete(1.0, tk.END)
-        self.line_count.insert(tk.END, '\n'.join(str(i) for i in range(1, int(line_count) + 1)))
-
-    def run_code(self, event=None):
-        code = self.text_area.get(1.0, tk.END).strip()
-        language = self.language.get()
-        if code:
-            temp_filename = "temp_script"
-            if language == 'Python':
-                temp_filename += ".py"
-            elif language == 'Bash':
-                temp_filename += ".sh"
-
-            with open(temp_filename, "w") as temp_file:
-                temp_file.write(code)
-
-            if language == 'Python':
-                result = subprocess.run(['python3', temp_filename], capture_output=True, text=True)
-            elif language == 'Bash':
-                result = subprocess.run(['bash', temp_filename], capture_output=True, text=True)
-
-            self.terminal.delete(1.0, tk.END)
-            self.terminal.insert(tk.END, result.stdout + result.stderr)
+        self.line_count.insert(tk.END, line_count_str)
+        self.line_count.config(state=tk.DISABLED)
 
 if __name__ == "__main__":
     root = tk.Tk()
-    editor = CodeEditor(root)
+    app = CodeEditor(root)
     root.mainloop()
