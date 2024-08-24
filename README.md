@@ -20,14 +20,26 @@ By the stable release (not alpha or beta) I want:
 Commit a file... please. This is my first project and I have high hopes for it. However, It won't go very far without YOU, so please help with this project. Helping can be as simple as reporting a bug or recomending a feature. Have a nice day!
 
 # Usage
+If you're on windows, extract the .7z and execute it.
+Or, If you're on linux:
+
+Install dependencies ```sudo apt update && sudo apt install python3 ruby nodejs pip```
+
+Install Tkinter ```pip install tk```
+
 Download with  ```git clone https://github.com/justanotherscriptkiddienerd/The-OpenCode-project```
 
 Run with ```cd The-OpenCode-project```
 
-And ```python3 Opencode1.0.0.py```
+And ```python3 Opencode1.0.1.py```
 
-You can also unzip and run the .exe, but It's easier just to use the .py *if* you have python and tkinter installed.
+# Current features (v1.0.1)
+-Supports Python, BASH, Ruby and JavaScript. 
 
+-Dark/light mode option
 
+-Autoswitching file extension
+
+-Error tools
 
 I have high hopes... 
