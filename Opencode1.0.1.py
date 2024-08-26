@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import filedialog, scrolledtext, Menu
 from tkinter import ttk
 import subprocess
-
+#Opencode 1.0.1
 class CodeEditor:
     def __init__(self, root):
         self.root = root
