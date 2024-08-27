@@ -1,8 +1,9 @@
 import tkinter as tk
-from tkinter import filedialog, scrolledtext, Menu
+from tkinter import filedialog, scrolledtext, Menu, simpledialog
 from tkinter import ttk
 import subprocess
-#Opencode 1.0.1
+from ttkthemes import ThemedTk  # Adding themes for a more modern look
+
 class CodeEditor:
     def __init__(self, root):
         self.root = root
@@ -22,9 +23,10 @@ class CodeEditor:
         style.configure('TButton', background=bg_color, foreground=fg_color, font=font)
         style.configure('TLabel', background=bg_color, foreground=fg_color, font=font)
         style.configure('TText', background=bg_color, foreground=fg_color, font=font)
+        style.configure('Rounded.TFrame', background=bg_color, relief='flat')
 
-        # Main frame
-        self.main_frame = ttk.Frame(self.root, padding=5)
+        # Main frame with rounded corners
+        self.main_frame = ttk.Frame(self.root, padding=5, style='Rounded.TFrame')
         self.main_frame.pack(expand=True, fill='both')
 
         # Text area
@@ -128,6 +130,7 @@ class CodeEditor:
         self.terminal.delete(1.0, tk.END)
         self.terminal.insert(tk.END, output.decode('utf-8'))
         self.terminal.insert(tk.END, error.decode('utf-8'))
+
     def change_font(self):
         font = simpledialog.askstring("Font", "Enter font name (e.g., 'Fira Code'):")
         if font:
@@ -147,6 +150,6 @@ class CodeEditor:
         self.line_count.config(state=tk.DISABLED)
 
 if __name__ == "__main__":
-    root = tk.Tk()
+    root = ThemedTk(theme="arc")  # Using a modern theme
     app = CodeEditor(root)
     root.mainloop()
