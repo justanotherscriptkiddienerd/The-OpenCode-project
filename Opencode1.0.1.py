@@ -1,8 +1,19 @@
 import tkinter as tk
-from tkinter import filedialog, scrolledtext, Menu, simpledialog
+from tkinter import filedialog, scrolledtext, Menu, simpledialog, messagebox
 from tkinter import ttk
 import subprocess
-from ttkthemes import ThemedTk  # Adding themes for a more modern look
+import os
+import sys
+
+success = (0)
+
+def run_script(script_path):
+            if sys.platform == "win32":
+		# For Windows, you can use cmd.exe or PowerShell
+                    subprocess.Popen(['start', 'cmd', '/k', script_path], shell=True)
+            else:
+		# For Unix-based systems (Linux, macOS)
+                    subprocess.Popen(['lxterminal', '-hold', '-e', script_path])
 
 class CodeEditor:
     def __init__(self, root):
@@ -23,10 +34,9 @@ class CodeEditor:
         style.configure('TButton', background=bg_color, foreground=fg_color, font=font)
         style.configure('TLabel', background=bg_color, foreground=fg_color, font=font)
         style.configure('TText', background=bg_color, foreground=fg_color, font=font)
-        style.configure('Rounded.TFrame', background=bg_color, relief='flat')
 
-        # Main frame with rounded corners
-        self.main_frame = ttk.Frame(self.root, padding=5, style='Rounded.TFrame')
+        # Main frame
+        self.main_frame = ttk.Frame(self.root, padding=5)
         self.main_frame.pack(expand=True, fill='both')
 
         # Text area
@@ -60,6 +70,7 @@ class CodeEditor:
         file_menu.add_command(label="Open", command=self.open_file)
         file_menu.add_command(label="Save", command=self.save_file)
         file_menu.add_separator()
+        file_menu.add_command(label="Check for Updates", command=self.check_for_updates)
         file_menu.add_command(label="Exit", command=self.root.destroy)
 
         run_menu = tk.Menu(menu_bar, tearoff=0, bg='#3c3c3c', fg='#dcdcdc')
@@ -149,7 +160,15 @@ class CodeEditor:
         self.line_count.insert(tk.END, line_count_str)
         self.line_count.config(state=tk.DISABLED)
 
+    def check_for_updates(self):
+        run_script(script_path="/home/dietpi/Test/update.sh")   
+        
 if __name__ == "__main__":
-    root = ThemedTk(theme="arc")  # Using a modern theme
+    root = tk.Tk()
     app = CodeEditor(root)
     root.mainloop()
+    script_name = "update.sh"
+    if not os.path.isfile(script_name):
+	    print(f"Script {script_name} not found!")
+	    sys.exit(1)
+    run_script(script_name)
