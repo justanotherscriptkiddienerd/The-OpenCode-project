@@ -19,6 +19,9 @@ By the stable release (not alpha or beta) I want:
 # How to Contribute
 Commit a file... please. This is my first project and I have high hopes for it. However, It won't go very far without YOU, so please help with this project. Helping can be as simple as reporting a bug or recomending a feature. Have a nice day!
 
+# Self-goals
+Stable release weekly, patches and pre inbetween
+
 # Usage
 If you're on windows, extract the .7z and execute it.
 Or, If you're on linux:
