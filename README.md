@@ -28,7 +28,7 @@ Or, If you're on linux:
 
 Install dependencies ```sudo apt update && sudo apt install python3 ruby nodejs pip```
 
-Install Tkinter ```pip install tk```
+Install Tkinter ```pip install tk ttkthemed```
 
 Download with  ```git clone https://github.com/justanotherscriptkiddienerd/The-OpenCode-project```
 
