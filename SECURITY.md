@@ -8,7 +8,8 @@ currently being supported with security updates.
 | Version | Supported          |
 | ------- | ------------------ |
 | Alpha   | :x:                |
-| 1.0     | :heavy_check_mark: |
+| 1.0.0   | :x:                |
+| 1.0.1   | :heavy_check_mark: |
 
 ## Reporting a Vulnerability
 
