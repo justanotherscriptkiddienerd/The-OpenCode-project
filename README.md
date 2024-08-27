@@ -32,7 +32,9 @@ Install Tkinter ```pip install tk ttkthemed```
 
 Download with  ```git clone https://github.com/justanotherscriptkiddienerd/The-OpenCode-project```
 
-Run with ```cd The-OpenCode-project```
+Open directrory ```cd The-OpenCode-project```
+
+Give update script permissions ```chmod +x update.sh```
 
 And ```python3 Opencode1.0.1.py```
 
